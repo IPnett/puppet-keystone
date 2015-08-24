@@ -89,6 +89,14 @@
 #     (optional) Wsgi script source.
 #     Defaults to undef.
 #
+#   [*headers*]
+#     (optional) Headers for the vhost.
+#     Defaults to undef.
+#
+#   [*fragment*]
+#     (optional) Custom fragment (e.g. for OS-FEDERATION) for the vhost.
+#     Defaults to undef.
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['keystone']
@@ -132,6 +140,8 @@ class keystone::wsgi::apache (
   $priority           = '10',
   $wsgi_script_ensure = 'file',
   $wsgi_script_source = undef,
+  $headers            = undef,
+  $fragment           = undef,
 ) {
 
   include ::keystone::params
@@ -244,6 +254,8 @@ class keystone::wsgi::apache (
     wsgi_daemon_process_options => $wsgi_daemon_process_options_main,
     wsgi_process_group          => 'keystone_main',
     wsgi_script_aliases         => $wsgi_script_aliases_main_real,
+    headers                     => $headers,
+    custom_fragment             => $fragment,
     require                     => File['keystone_wsgi_main'],
   }
 
@@ -269,6 +281,8 @@ class keystone::wsgi::apache (
       wsgi_daemon_process_options => $wsgi_daemon_process_options_admin,
       wsgi_process_group          => 'keystone_admin',
       wsgi_script_aliases         => $wsgi_script_aliases_admin,
+      headers                     => $headers,
+      custom_fragment             => $fragment,
       require                     => File['keystone_wsgi_admin'],
     }
   }
