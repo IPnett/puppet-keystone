@@ -107,6 +107,10 @@
 #     directives to be placed at the end of the vhost configuration.
 #     Defaults to undef.
 #
+#   [*headers*]
+#     (optional) Headers for the vhost.
+#     Defaults to undef.
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['keystone']
@@ -155,6 +159,7 @@ class keystone::wsgi::apache (
 
   $access_log_format     = false,
   $vhost_custom_fragment = undef,
+  $headers               = undef,
 ) {
 
   include ::keystone::params
@@ -270,6 +275,7 @@ class keystone::wsgi::apache (
     wsgi_application_group      => $wsgi_application_group,
     wsgi_pass_authorization     => $wsgi_pass_authorization,
     custom_fragment             => $vhost_custom_fragment,
+    headers                     => $headers,
     require                     => File['keystone_wsgi_main'],
     access_log_format           => $access_log_format,
   }
@@ -299,6 +305,7 @@ class keystone::wsgi::apache (
       wsgi_application_group      => $wsgi_application_group,
       wsgi_pass_authorization     => $wsgi_pass_authorization,
       custom_fragment             => $vhost_custom_fragment,
+      headers                     => $headers,
       require                     => File['keystone_wsgi_admin'],
       access_log_format           => $access_log_format,
     }
