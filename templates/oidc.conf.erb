@@ -1,0 +1,20 @@
+OIDCRedirectURI <%= @redirect_uri %>
+OIDCCryptoPassphrase <%= @crypto_passphrase %>
+OIDCProviderMetadataURL <%= @provider_metadata_url %>
+OIDCResponseType <%= @response_type %>
+OIDCClientID <%= @client_id %>
+OIDCClientSecret <%= @client_secret %>
+OIDCScope "<%= Array(@scope).sort.join(" ") -%>"
+OIDCClaimPrefix "<%= @claim_prefix -%>"
+
+<Location ~ "/v3/auth/OS-FEDERATION/websso/oidc">
+  AuthType openid-connect
+  Require valid-user
+  LogLevel debug
+</Location>
+
+<Location ~ "/v3/OS-FEDERATION/identity_providers/.*?/protocols/oidc/auth">
+    AuthType openid-connect
+    Require valid-user
+    LogLevel debug
+</Location>
